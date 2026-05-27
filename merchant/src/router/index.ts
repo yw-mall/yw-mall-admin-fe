@@ -31,6 +31,24 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/staff/list.vue'),
         meta: { title: '员工管理', icon: 'UserFilled', perms: ['staff.read'] },
       },
+      {
+        path: 'products',
+        name: 'Products',
+        component: () => import('@/views/product/list.vue'),
+        meta: { title: '商品管理', icon: 'Goods', perms: ['product.read'] },
+      },
+      {
+        path: 'products/new',
+        name: 'ProductNew',
+        component: () => import('@/views/product/edit.vue'),
+        meta: { title: '新建商品', perms: ['product.write'] },
+      },
+      {
+        path: 'products/:id/edit',
+        name: 'ProductEdit',
+        component: () => import('@/views/product/edit.vue'),
+        meta: { title: '编辑商品', perms: ['product.write'] },
+      },
     ],
   },
   {

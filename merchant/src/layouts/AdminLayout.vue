@@ -15,7 +15,7 @@ interface MenuItem {
 const menu: MenuItem[] = [
   { path: '/dashboard', title: '仪表盘', icon: 'Odometer' },
   { path: '/staff', title: '员工管理', icon: 'UserFilled', perm: 'staff.read' },
-  { path: '/products', title: '商品 (M2)', icon: 'Goods', perm: 'product.read', disabled: true },
+  { path: '/products', title: '商品管理', icon: 'Goods', perm: 'product.read' },
   { path: '/orders', title: '订单 (M3)', icon: 'List', perm: 'order.read', disabled: true },
   { path: '/refunds', title: '退款 (M4)', icon: 'RefreshLeft', perm: 'refund.read', disabled: true },
   { path: '/wallet', title: '钱包 (M5)', icon: 'Money', perm: 'finance.read', disabled: true },
