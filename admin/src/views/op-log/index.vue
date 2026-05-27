@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import PageContainer from '@/components/PageContainer.vue'
-import { queryOpLog, type OpLogEntryDTO } from '@/api/oplog'
+import { queryOpLog, type OpLogEntryDTO, type OpLogQueryParams } from '@/api/oplog'
 import { formatTime } from '@/utils/format'
 
 const loading = ref(false)
@@ -20,8 +20,8 @@ const filter = reactive({
   pageSize: 20,
 })
 
-function buildParams() {
-  const p: Record<string, unknown> = {
+function buildParams(): OpLogQueryParams {
+  const p: OpLogQueryParams = {
     page: filter.page,
     pageSize: filter.pageSize,
   }
@@ -35,7 +35,7 @@ function buildParams() {
     p.since = Math.floor(filter.timeRange[0].getTime() / 1000)
     p.until = Math.floor(filter.timeRange[1].getTime() / 1000)
   }
-  return p as Parameters<typeof queryOpLog>[0]
+  return p
 }
 
 async function fetchList() {
