@@ -49,6 +49,24 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/product/edit.vue'),
         meta: { title: '编辑商品', perms: ['product.write'] },
       },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: () => import('@/views/order/list.vue'),
+        meta: { title: '订单管理', icon: 'List', perms: ['order.read'] },
+      },
+      {
+        path: 'orders/:id',
+        name: 'OrderDetail',
+        component: () => import('@/views/order/detail.vue'),
+        meta: { title: '订单详情', perms: ['order.read'] },
+      },
+      {
+        path: 'freight',
+        name: 'FreightTemplates',
+        component: () => import('@/views/freight/list.vue'),
+        meta: { title: '物流模板', icon: 'Van', perms: ['freight.read'] },
+      },
     ],
   },
   {
