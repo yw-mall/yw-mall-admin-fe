@@ -130,7 +130,7 @@ function updateField(idx: number, field: 'price' | 'stock' | 'image', value: num
         <template #default="{ row, $index }">
           <el-input
             :model-value="(row.price / 100).toFixed(2)"
-            @change="(v: string) => updateField($index, 'price', Math.round(Number(v) * 100))"
+            @update:model-value="(v: string) => updateField($index, 'price', Math.round(Number(v || 0) * 100))"
             placeholder="0.00"
           />
         </template>
@@ -140,7 +140,7 @@ function updateField(idx: number, field: 'price' | 'stock' | 'image', value: num
           <el-input-number
             :model-value="row.stock"
             :min="0"
-            @change="(v) => updateField($index, 'stock', v as number)"
+            @update:model-value="(v) => updateField($index, 'stock', (v ?? 0) as number)"
           />
         </template>
       </el-table-column>
@@ -149,7 +149,7 @@ function updateField(idx: number, field: 'price' | 'stock' | 'image', value: num
           <el-input
             :model-value="row.image"
             placeholder="图片 URL（可粘贴上面上传的）"
-            @change="(v: string) => updateField($index, 'image', v)"
+            @update:model-value="(v: string) => updateField($index, 'image', v)"
           />
         </template>
       </el-table-column>
