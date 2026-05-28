@@ -18,7 +18,7 @@ const menu: MenuItem[] = [
   { path: '/products', title: '商品管理', icon: 'Goods', perm: 'product.read' },
   { path: '/orders', title: '订单管理', icon: 'List', perm: 'order.read' },
   { path: '/refunds', title: '退款处理', icon: 'RefreshLeft', perm: 'refund.read' },
-  { path: '/wallet', title: '钱包 (M5)', icon: 'Money', perm: 'finance.read', disabled: true },
+  { path: '/wallet', title: '财务', icon: 'Money', perm: 'finance.read' },
   { path: '/freight', title: '物流模板', icon: 'Van', perm: 'freight.read' },
   { path: '/decoration', title: '装修 (M6)', icon: 'Picture', perm: 'decoration.write', disabled: true },
 ]
