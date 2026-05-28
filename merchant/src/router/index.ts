@@ -67,6 +67,18 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/freight/list.vue'),
         meta: { title: '物流模板', icon: 'Van', perms: ['freight.read'] },
       },
+      {
+        path: 'refunds',
+        name: 'Refunds',
+        component: () => import('@/views/refund/list.vue'),
+        meta: { title: '退款处理', icon: 'RefreshLeft', perms: ['refund.read'] },
+      },
+      {
+        path: 'refunds/:id',
+        name: 'RefundDetail',
+        component: () => import('@/views/refund/detail.vue'),
+        meta: { title: '退款详情', perms: ['refund.read'] },
+      },
     ],
   },
   {
