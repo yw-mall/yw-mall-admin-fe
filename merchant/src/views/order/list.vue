@@ -11,6 +11,10 @@ const page = ref(1)
 const pageSize = ref(20)
 const status = ref<number>(-1) // -1 = 全部
 const loading = ref(false)
+// 模糊检索 —— 输入后回车或点搜索；reset 清空并重查
+const orderNoKw = ref('')
+const receiverNameKw = ref('')
+const receiverPhoneKw = ref('')
 
 const STATUS_TABS = [
   { label: '全部', value: -1 },
@@ -44,6 +48,9 @@ async function reload() {
       page: page.value,
       pageSize: pageSize.value,
       status: status.value >= 0 ? status.value : undefined,
+      orderNoKw: orderNoKw.value.trim() || undefined,
+      receiverNameKw: receiverNameKw.value.trim() || undefined,
+      receiverPhoneKw: receiverPhoneKw.value.trim() || undefined,
     })
     items.value = r.orders
     total.value = r.total
@@ -54,6 +61,18 @@ async function reload() {
 
 onMounted(reload)
 watch([status, page], reload)
+
+// 搜索 —— 重置 page 到 1 后触发 reload（如果 page 已经是 1 就直接调）
+function onSearch() {
+  if (page.value === 1) reload()
+  else page.value = 1 // watcher 会自动 reload
+}
+function onReset() {
+  orderNoKw.value = ''
+  receiverNameKw.value = ''
+  receiverPhoneKw.value = ''
+  onSearch()
+}
 
 function fmtPrice(p: number) {
   return '¥' + (p / 100).toFixed(2)
@@ -68,6 +87,33 @@ function goDetail(o: OrderItem) {
 
 <template>
   <PageContainer title="订单管理">
+    <!-- 模糊检索区 —— 回车 / 搜索按钮触发，重置清空 -->
+    <div class="filter-bar">
+      <el-input
+        v-model="orderNoKw"
+        placeholder="订单号"
+        clearable
+        style="width: 220px"
+        @keyup.enter="onSearch"
+      />
+      <el-input
+        v-model="receiverNameKw"
+        placeholder="收件人"
+        clearable
+        style="width: 160px"
+        @keyup.enter="onSearch"
+      />
+      <el-input
+        v-model="receiverPhoneKw"
+        placeholder="手机号"
+        clearable
+        style="width: 180px"
+        @keyup.enter="onSearch"
+      />
+      <el-button type="primary" @click="onSearch">搜索</el-button>
+      <el-button @click="onReset">重置</el-button>
+    </div>
+
     <el-tabs
       v-model="status"
       @tab-change="(v: string | number) => (status = Number(v))"
@@ -125,6 +171,13 @@ function goDetail(o: OrderItem) {
 </template>
 
 <style scoped>
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
 .muted {
   color: #999;
   font-size: 12px;

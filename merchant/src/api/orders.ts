@@ -39,6 +39,9 @@ export async function listOrders(params: {
   page?: number
   pageSize?: number
   status?: number
+  orderNoKw?: string
+  receiverNameKw?: string
+  receiverPhoneKw?: string
 }): Promise<{ orders: OrderItem[]; total: number }> {
   const qs = new URLSearchParams()
   qs.set('page', String(params.page ?? 1))
@@ -46,6 +49,9 @@ export async function listOrders(params: {
   if (params.status !== undefined && params.status >= 0) {
     qs.set('status', String(params.status))
   }
+  if (params.orderNoKw) qs.set('orderNoKw', params.orderNoKw)
+  if (params.receiverNameKw) qs.set('receiverNameKw', params.receiverNameKw)
+  if (params.receiverPhoneKw) qs.set('receiverPhoneKw', params.receiverPhoneKw)
   type Body = { orders: OrderItem[]; total: number }
   const body = await get<ApiResponse<Body> & Body>(`/orders?${qs.toString()}`)
   return unwrap(body) as Body
