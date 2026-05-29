@@ -85,6 +85,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/wallet/index.vue'),
         meta: { title: '财务', icon: 'Money', perms: ['finance.read'] },
       },
+      {
+        path: 'decoration',
+        name: 'Decoration',
+        component: () => import('@/views/decoration/edit.vue'),
+        meta: { title: '店铺装修', icon: 'Picture' },
+      },
     ],
   },
   {

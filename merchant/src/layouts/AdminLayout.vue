@@ -20,7 +20,7 @@ const menu: MenuItem[] = [
   { path: '/refunds', title: '退款处理', icon: 'RefreshLeft', perm: 'refund.read' },
   { path: '/wallet', title: '财务', icon: 'Money', perm: 'finance.read' },
   { path: '/freight', title: '物流模板', icon: 'Van', perm: 'freight.read' },
-  { path: '/decoration', title: '装修 (M6)', icon: 'Picture', perm: 'decoration.write', disabled: true },
+  { path: '/decoration', title: '店铺装修', icon: 'Picture' },
 ]
 
 const route = useRoute()

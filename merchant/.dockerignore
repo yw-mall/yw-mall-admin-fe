@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.DS_Store
+*.log
+.vscode
+.idea
+
+# pnpm-workspace.yaml 只声明 allowBuilds（已在 package.json 的 pnpm.onlyBuiltDependencies
+# 里等价配置），又缺 packages 字段 —— 容器内 pnpm 9 严格模式会报 "packages field
+# missing or empty"。本地 pnpm 11 容忍但容器不容忍，索性不打进镜像。
+pnpm-workspace.yaml
