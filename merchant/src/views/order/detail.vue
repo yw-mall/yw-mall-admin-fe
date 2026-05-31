@@ -149,6 +149,15 @@ async function submitReject() {
         </el-descriptions-item>
         <el-descriptions-item label="金额">
           <span class="price">{{ fmtPrice(order.totalAmount) }}</span>
+          <span v-if="(order.promotionDiscount || 0) + (order.couponDiscount || 0) > 0" class="muted" style="margin-left: 8px">
+            (实付 <span class="price">{{ fmtPrice(order.paidAmount ?? order.totalAmount) }}</span>)
+          </span>
+        </el-descriptions-item>
+        <el-descriptions-item v-if="(order.promotionDiscount || 0) > 0" label="活动优惠">
+          - {{ fmtPrice(order.promotionDiscount ?? 0) }}
+        </el-descriptions-item>
+        <el-descriptions-item v-if="(order.couponDiscount || 0) > 0" label="券优惠">
+          - {{ fmtPrice(order.couponDiscount ?? 0) }}
         </el-descriptions-item>
         <el-descriptions-item label="创建时间">{{ fmtTs(order.createTime) }}</el-descriptions-item>
         <el-descriptions-item label="付款时间">{{ fmtTs(order.payTime) }}</el-descriptions-item>

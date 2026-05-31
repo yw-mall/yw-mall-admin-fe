@@ -26,6 +26,11 @@ export interface OrderDetail extends OrderItem {
   cancelTime?: number
   cancelReason?: string
   completeTime?: number
+  // Phase 1 优惠明细
+  promotionDiscount?: number
+  couponDiscount?: number
+  paidAmount?: number
+  discountDetail?: string // JSON
 }
 
 function unwrap<T>(b: ApiResponse<T> & T): T {
