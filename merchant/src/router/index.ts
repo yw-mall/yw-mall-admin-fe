@@ -109,6 +109,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/promotion/edit.vue'),
         meta: { title: '编辑活动' },
       },
+      {
+        path: 'coupons',
+        name: 'Coupons',
+        component: () => import('@/views/coupon/list.vue'),
+        meta: { title: '优惠券', icon: 'Tickets' },
+      },
     ],
   },
   {

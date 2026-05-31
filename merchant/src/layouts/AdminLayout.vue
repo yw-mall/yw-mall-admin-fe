@@ -22,6 +22,7 @@ const menu: MenuItem[] = [
   { path: '/freight', title: '物流模板', icon: 'Van', perm: 'freight.read' },
   { path: '/decoration', title: '店铺装修', icon: 'Picture' },
   { path: '/promotions', title: '营销活动', icon: 'Discount' },
+  { path: '/coupons', title: '优惠券', icon: 'Tickets' },
 ]
 
 const route = useRoute()
