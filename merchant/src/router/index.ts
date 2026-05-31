@@ -91,6 +91,24 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/decoration/edit.vue'),
         meta: { title: '店铺装修', icon: 'Picture' },
       },
+      {
+        path: 'promotions',
+        name: 'Promotions',
+        component: () => import('@/views/promotion/list.vue'),
+        meta: { title: '营销活动', icon: 'Discount' },
+      },
+      {
+        path: 'promotions/new',
+        name: 'PromotionNew',
+        component: () => import('@/views/promotion/edit.vue'),
+        meta: { title: '新建活动' },
+      },
+      {
+        path: 'promotions/:id/edit',
+        name: 'PromotionEdit',
+        component: () => import('@/views/promotion/edit.vue'),
+        meta: { title: '编辑活动' },
+      },
     ],
   },
   {

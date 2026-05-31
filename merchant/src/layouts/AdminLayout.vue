@@ -21,6 +21,7 @@ const menu: MenuItem[] = [
   { path: '/wallet', title: '财务', icon: 'Money', perm: 'finance.read' },
   { path: '/freight', title: '物流模板', icon: 'Van', perm: 'freight.read' },
   { path: '/decoration', title: '店铺装修', icon: 'Picture' },
+  { path: '/promotions', title: '营销活动', icon: 'Discount' },
 ]
 
 const route = useRoute()
