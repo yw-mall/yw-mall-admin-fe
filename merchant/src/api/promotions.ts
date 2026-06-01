@@ -16,6 +16,13 @@ export interface PromotionAction {
   stepOrder?: number
 }
 
+// S2.4 限购规则
+export interface PromotionRule {
+  perUserQuota?: number
+  perOrderQuota?: number
+  perDayQuota?: number
+}
+
 export interface Promotion {
   id: number
   type: 'fullreduce' | 'discount' | 'fixprice' | 'coupon'
@@ -32,6 +39,7 @@ export interface Promotion {
   updateTime: number
   targets?: PromotionTarget[]
   actions?: PromotionAction[]
+  rule?: PromotionRule
 }
 
 export interface CreatePromotionReq {
@@ -44,6 +52,7 @@ export interface CreatePromotionReq {
   description?: string
   targets: PromotionTarget[]
   actions: PromotionAction[]
+  rule?: PromotionRule
 }
 
 function unwrap<T>(b: ApiResponse<T> & T): T {

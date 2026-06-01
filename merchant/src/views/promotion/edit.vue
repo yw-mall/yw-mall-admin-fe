@@ -36,6 +36,10 @@ const form = ref({
   fixprices: '' as string, // 直降时各 SKU 对应价格（分，与 skuIds 一一对应）
   // 满减专用：阶梯
   steps: [{ thresholdValue: 19900, benefitValue: 3000 }] as { thresholdValue: number; benefitValue: number }[],
+  // S2.4 限购规则 (0=不限)
+  perUserQuota: 0,
+  perOrderQuota: 0,
+  perDayQuota: 0,
 })
 
 const dateRange = ref<[Date, Date] | null>(null)
@@ -64,6 +68,12 @@ onMounted(async () => {
       if (t) {
         form.value.targetType = t.targetType as any
         if (t.targetType === 'shop') form.value.shopTargetId = t.targetId
+      }
+      // S2.4 限购规则
+      if (p.rule) {
+        form.value.perUserQuota = p.rule.perUserQuota ?? 0
+        form.value.perOrderQuota = p.rule.perOrderQuota ?? 0
+        form.value.perDayQuota = p.rule.perDayQuota ?? 0
       }
       if (p.type === 'fullreduce') {
         form.value.steps = (p.actions || []).map((a) => ({
@@ -142,6 +152,15 @@ async function save() {
   saving.value = true
   try {
     const payload = buildPayload()
+    // S2.4 限购规则 - 三个 quota 都 0 表示不限, rule 为空
+    const rule =
+      form.value.perUserQuota > 0 || form.value.perOrderQuota > 0 || form.value.perDayQuota > 0
+        ? {
+            perUserQuota: form.value.perUserQuota,
+            perOrderQuota: form.value.perOrderQuota,
+            perDayQuota: form.value.perDayQuota,
+          }
+        : undefined
     if (isEdit.value) {
       await updatePromotion(editId.value, {
         name: form.value.name,
@@ -151,6 +170,7 @@ async function save() {
         stackable: form.value.stackable,
         description: form.value.description,
         ...payload,
+        rule,
       })
       ElMessage.success('已保存')
     } else {
@@ -163,6 +183,7 @@ async function save() {
         stackable: form.value.stackable,
         description: form.value.description,
         ...payload,
+        rule,
       })
       ElMessage.success(`已创建草稿 #${id}，去列表上线`)
     }
@@ -217,6 +238,29 @@ async function save() {
       <el-form-item label="可叠加">
         <el-switch v-model="form.stackable" />
         <span class="hint">关闭后此活动与其他活动互斥</span>
+      </el-form-item>
+
+      <el-form-item label="限购规则">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap">
+          <div>
+            <span class="hint" style="margin: 0 4px 0 0">单订单限购</span>
+            <el-input-number v-model="form.perOrderQuota" :min="0" :max="999" style="width: 110px" />
+            <span class="hint">件 (0=不限)</span>
+          </div>
+          <div>
+            <span class="hint" style="margin: 0 4px 0 0">每人累计</span>
+            <el-input-number v-model="form.perUserQuota" :min="0" :max="9999" style="width: 110px" />
+            <span class="hint">件</span>
+          </div>
+          <div>
+            <span class="hint" style="margin: 0 4px 0 0">每日</span>
+            <el-input-number v-model="form.perDayQuota" :min="0" :max="999" style="width: 110px" />
+            <span class="hint">件</span>
+          </div>
+        </div>
+        <div style="margin-top: 4px">
+          <span class="hint">超出限购的订单不享受此活动；累计/每日限购需后续 Sprint 接 Redis 实现</span>
+        </div>
       </el-form-item>
 
       <el-form-item label="活动描述">
