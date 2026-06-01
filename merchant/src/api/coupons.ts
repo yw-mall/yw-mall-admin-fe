@@ -24,6 +24,8 @@ export interface CouponTemplate {
   status: number // 0下架/1上架
   createTime: number
   updateTime: number
+  isNewUserOnly?: boolean
+  newUserWithinDays?: number
 }
 
 export interface CreateCouponTemplateReq {
@@ -40,6 +42,9 @@ export interface CreateCouponTemplateReq {
   validEnd?: number
   receiveStart: number
   receiveEnd: number
+  // S2.3 新人券
+  isNewUserOnly?: boolean
+  newUserWithinDays?: number
 }
 
 function unwrap<T>(b: ApiResponse<T> & T): T {

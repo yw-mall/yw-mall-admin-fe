@@ -88,6 +88,8 @@ const form = ref({
   validDays: 14,
   fixedRange: null as [Date, Date] | null,
   receiveRange: [new Date(), new Date(Date.now() + 30 * 86400 * 1000)] as [Date, Date],
+  isNewUserOnly: false,
+  newUserWithinDays: 7,
 })
 const saving = ref(false)
 
@@ -104,6 +106,8 @@ function openCreate() {
     validDays: 14,
     fixedRange: null,
     receiveRange: [new Date(), new Date(Date.now() + 30 * 86400 * 1000)],
+    isNewUserOnly: false,
+    newUserWithinDays: 7,
   }
   dlgVisible.value = true
 }
@@ -144,6 +148,8 @@ async function save() {
       validEnd: form.value.fixedRange ? Math.floor(form.value.fixedRange[1].getTime() / 1000) : 0,
       receiveStart: Math.floor(form.value.receiveRange[0].getTime() / 1000),
       receiveEnd: Math.floor(form.value.receiveRange[1].getTime() / 1000),
+      isNewUserOnly: form.value.isNewUserOnly,
+      newUserWithinDays: form.value.isNewUserOnly ? form.value.newUserWithinDays : 0,
     })
     ElMessage.success(`已创建模板 #${id}, 默认上架`)
     dlgVisible.value = false
@@ -166,7 +172,14 @@ async function save() {
 
     <el-table v-loading="loading" :data="items" border>
       <el-table-column prop="id" label="ID" width="80" />
-      <el-table-column prop="name" label="名称" min-width="200" />
+      <el-table-column label="名称" min-width="220">
+        <template #default="{ row }">
+          {{ row.name }}
+          <el-tag v-if="row.isNewUserOnly" type="warning" size="small" effect="plain" style="margin-left: 4px">
+            新人 {{ row.newUserWithinDays || 7 }}d
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="类型" width="100">
         <template #default="{ row }">
           <el-tag>{{ TYPE_LABEL[row.type] || row.type }}</el-tag>
@@ -274,6 +287,15 @@ async function save() {
         </el-form-item>
         <el-form-item label="领取窗口" required>
           <el-date-picker v-model="form.receiveRange" type="datetimerange" range-separator="~" />
+        </el-form-item>
+        <el-form-item label="新人专享">
+          <el-switch v-model="form.isNewUserOnly" />
+          <span class="hint">仅注册不久的新用户可领</span>
+        </el-form-item>
+        <el-form-item v-if="form.isNewUserOnly" label="新用户判定">
+          注册后
+          <el-input-number v-model="form.newUserWithinDays" :min="1" :max="365" style="width: 110px; margin: 0 4px" />
+          天内
         </el-form-item>
       </el-form>
       <template #footer>
